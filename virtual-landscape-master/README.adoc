@@ -1,0 +1,250 @@
+= Rapport Virtual-Landscape
+Rédigé par : Leny Gérance.
+
+IMPORTANT: lien github du projet : https://github.com/lenygerance/Virtual-Landscape.git[Virtual-Landscape]
+
+== Sommaire
+* Choix de l'IDE
+
+* Representation Global 
+** Choix du dessin
+** Réglage des parametres par défault
+
+* Assemblage des Elements
+** Sol, Cactus & Canyon
+** Lune & Soleil
+** Mongolfiere
+
+
+
+.Choix de l'IDE
+****
+****
+
+Pour l'éditeur de texte, j'ai décidé de partir sur *_Visual Studio Code_*.
+
+.VSCode
+[caption="",link=https://code.visualstudio.com/assets/apple-touch-icon.png]
+image::https://code.visualstudio.com/assets/apple-touch-icon.png[Visual Studio Code,50,50]
+
+NOTE: J'ai choisi ce dernier car il propose un espace de travail comfortable et une prise en main simple.
+
+
+.Représentation Global
+****
+****
+
+Choix du dessin::
+Pour commencer, voilà à quoi ressemble mon projet [.underline]#avec tout ces possibilité :#
++
+image::https://cdn.discordapp.com/attachments/1105886698497396797/1105888212582408202/image.png[]
++
+On va maintenant voir comment tous ces éléments sont mis en place...
+Réglage des parametres par défault::
+Tous ces Elements représentés partent de paramétres par défaults puis modifiés depuis le fichier Javascript "Triangle" que j'ai aussi modifiés pour l'utiliser comme fichier de depart pour chaque nouvelle création.
++
+`Voici les paramètres par défaults:`
++
+    import { AbstractForm } from './AbstractForm.js'; //A modifier avec le bon nom de fichier la valeurs où écrit { AbstractForm }
+
+    /**
+    * Déssine un triangle
+    * Fichier exemple
+    * modifier avec le bon nom de fichiers les valeurs où sont écrit triangle
+    */
+    export class Triangle extends AbstractForm {
+  //  Valeur par défault pour éviter les erreurs lors d'argurments vides
+  constructor(
+    x = 0,
+    y = 0,
+    width = 0,
+    height = 0,
+    fillColor = '',
+    strokeColor = '',
+    strokeWidth = 2,
+    pesenteur = false,
+    ordreConstruction = 100
+  ) {
+    super(x, y, width, height, fillColor, strokeColor, strokeWidth, pesenteur, ordreConstruction)
+  }
+
+
+  /**
+   * Dessine la forme spécifique à cette classe
+   * @param ctx contexte 2D du canvas
+   */
+  draw(ctx) {
+    ctx.save()
+
+    // Style
+    ctx.fillStyle = this.fillColor
+    ctx.lineWidth = this.strokeWidth
+
+    // Debut
+    ctx.beginPath()
+    ctx.strokeStyle = this.strokeColor
+
+    // pousse l'objet au bas de l'écran (avec pesanteur)
+    let new_y = (this.pesanteur) ? ctx.canvas.height - this.height : this.y
+    
+    //Ici modifié pour que l'objet s'affiche sans pesanteur
+    let new_y = this.y
+
+    //supprimer un des codes pesenteur au-dessus quand son opposé est choisis
+
+    // un peu d'ombre pour les triangles
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 2;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+
+    //code exemple
+    // triangle avec une base
+    ctx.moveTo(this.x + this.width / 2, new_y)
+    ctx.lineTo(this.right, new_y + this.height)
+    ctx.lineTo(this.x, new_y + this.height)
+
+    ctx.closePath()
+
+   
+    ctx.fill()
+    ctx.stroke()
+
+    
+    ctx.restore()
+  }
+
+  /**
+   * get array of forms
+   * @return {[Triangle,...]}     //A modifier avec le bon nom
+   */
+  static buildForms() {
+    const myTriangle = new Triangle(0, 0, 0, 0, 'gold', '', 2, false, 100) //a modifier apres le dessin fini
+    let max = ~~(Math.random() * 0) + 1 // Default : Objet apparait seul
+    let forms = []
+    for (let i = 0; i < max; i++) {
+      forms.push(
+        new Triangle(
+          myTriangle.x,
+          myTriangle.y,
+          myTriangle.width,
+          myTriangle.height,
+          myTriangle.fillColor,
+          myTriangle.strokeColor,
+          '',
+          i % 2 === 0 // pesenteur une fois sur 2
+        )
+      )
+    }
+    // retourne un tableau d'objets (A modifier avec le bon nom)
+    return forms
+   }
+}
+
++
+NOTE: Lors de la conception, les paramétres par défaults sont soit modifiés ou supprimés selon l'element crée. +
+Aussi j'ai supprimé le fichier Javascript "Triangle" que j'avais modifié une fois le projet terminé +
+Ici seront notés seulement les partis modifiés des fichier.JS par rapport à l'exemple ci-dessus
+
+.Assemblage des Elements
+****
+****
+
+Sol, Cactus & Canyon::
+Le point commun des fichiers.JS *_Sol, Cactus & Canyon_* est qu'ils ont sont tous fixes* +
+_*Ne bouges pas lors de l'actualisation de l'onglet/fenetre_. +
++
+*_Sol_* :
++
+    ctx.beginPath
+    ctx.moveTo(this.x + -100, this.y + 720, new_y);
+    ctx.bezierCurveTo(this.x + 200, this.y + 630, this.x + 1040, this.y + 495, this.x + 1750, this.y + 720);
+    ctx.fill();
+    ctx.closePath()
++
+Il est aussi celui dans l'ordre de construction qui apparait en dernier*  : +
+_*Il apparait en dernier car son nombre dans l'ordre de construction plus grand/haut par rapport aux autres élément dessinés, #ici 10#_
++
+    const mySol = new Sol(0, 0, 0, 0, 'rgba(142, 67, 74, 255)', '', 2, true, 10)
++
+*_Cactus_* : +
+Le code d'un de mes cactus
++
+    ctx.beginPath(); //base cactus (3eme)
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = '#646d46';
+    ctx.moveTo(this.x + 475, this.y + 416);
+    ctx.lineTo(this.x + 472, this.y + 545);
+    ctx.lineCap = "round";
+    ctx.stroke();
+    ctx.closePath()
+
+    ctx.beginPath(); // fleur
+    ctx.fillStyle = '#8c5360';
+    ctx.beginPath();
+    ctx.moveTo(this.x + 475, this.y + 397);
+    ctx.lineTo(this.x + 465, this.y + 387);
+    ctx.lineTo(this.x + 485, this.y + 387);
+    ctx.fill();
+    ctx.moveTo(this.x + 475, this.y + 377);
+    ctx.lineTo(this.x + 465, this.y + 387);
+    ctx.lineTo(this.x + 485, this.y + 387);
+    ctx.fill();
+    ctx.closePath()
+
++
+Comme les cactus sont differents entre eux (par leur couleur ou certains avec ou sans fleur par exemples)...
++ 
+image::https://cdn.discordapp.com/attachments/1105886698497396797/1105940505935761468/image.png[]
++
+..."new Cactus" aura donc des valeurs entierement non modifiés donc [.underline]#_par défault_#
++
+ const myCactus = new Cactus(0, 0, 0, 0, '', '', 2, true, 3)
++
+*_Canyon_* : +
+Dans ce fichier, j'ai conçu des colonnes de pierres comme celle ci : 
++
+image::https://cdn.discordapp.com/attachments/1105886698497396797/1105940010739437568/image.png[]
+
+Pour ce faire j'ai fait des rectangles de plusieurs couleur marron foncé pour représenter la pierre avec des triangles sur leur cotés pour faire un effet de 3D.+
+
+ ctx.beginPath();
+    ctx.fillStyle = '#564044'; // 2ere couleur
+    ctx.fillRect(this.x + 1060, this.y + 500, 30, 25);
+    ctx.moveTo(this.x + 1050, this.y + 522); //effet de 3D
+    ctx.lineTo(this.x + 1050, this.y + 500); 
+    ctx.lineTo(this.x + 1070, this.y + 525);
+    ctx.moveTo(this.x + 1050, this.y + 522);
+    ctx.lineTo(this.x + 1050, this.y + 500); 
+    ctx.lineTo(this.x + 1070, this.y + 505);
+    ctx.moveTo(this.x + 1110, this.y + 505);
+    ctx.lineTo(this.x + 1100, this.y + 525);
+    ctx.lineTo(this.x + 1110, this.y + 523);
+    ctx.fill();
+    ctx.closePath()
+
+Comme pour les cactus, "new Canyon" aura des valeurs [.underline]#_par défault_#.
+
+
+Lune & Soleil::
++
+image::https://cdn.discordapp.com/attachments/1105886698497396797/1106632952860921866/soleil_et_lune.PNG[]
+*_Soleil_*:
++
+  ctx.arc(this.x + 765, this.y + 475, 120, 0, Math.PI * 2, true, new_y); 
+    ctx.fill()
+    
+*_Lune_*:+
+
+  ctx.arc(this.x + 205, this.y + 45, 500, 0, Math.PI * 2, true);  // Lune
+    ctx.fill();
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const myLune = new Lune(110, 75, 0, 100, 'white', '', 2, true, 2)
+
+La lune et le Soleil ont la particulier d'avoir une chance sur deux 1/² d'apparaitre.+
+
+ let max = ~~(Math.random() * 2) // Lune et Soleil ont 1 chance sur 2 d'apparaitre
+
+
+
+
