@@ -1,11 +1,13 @@
-= Rapport Virtual-Landscape
-Rédigé par : Leny Gérance.
+= Rapport Virtual-Landscape 
+
+Rédigé par : Leny Gérance le _14 Mai 2023_
 
 IMPORTANT: lien github du projet : https://github.com/lenygerance/Virtual-Landscape.git[Virtual-Landscape]
 
 == Sommaire
+* Introdution
+** Contexte
 * Choix de l'IDE
-
 * Representation Global 
 ** Choix du dessin
 ** Réglage des parametres par défault
@@ -15,7 +17,13 @@ IMPORTANT: lien github du projet : https://github.com/lenygerance/Virtual-Landsc
 ** Lune & Soleil
 ** Mongolfiere
 
+.Introdution
+****
+****
+Contexte::
+Dans ce rapport, je vais expliquer les différents objets/élément qui compose mon dessin. 
 
+J'ai choisis de représenter un desert parce que celui-ci fait penser au voyage et a un dépaysement grace à ces formes et couleur différent de notre habituelle vie en métropole.
 
 .Choix de l'IDE
 ****
@@ -245,6 +253,12 @@ La lune et le Soleil ont la particulier d'avoir une chance sur deux 1/² d'appar
 
  let max = ~~(Math.random() * 2) // Lune et Soleil ont 1 chance sur 2 d'apparaitre
 
+.Conclusion
+****
+****
 
+Lors de la conception et une fois le choix des éléments determinés, j'ai surtout utilisé le buildForm pour adapter l'emplacement et le comportement de ces objets, ce qui m'as permis à chaque actualisation de la fenetre, d'obtenir de nouvelles finalités +
+
+image::https://cdn.discordapp.com/attachments/1105886698497396797/1105888212582408202/image.png[]
 
 
